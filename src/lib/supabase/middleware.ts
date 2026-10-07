@@ -4,7 +4,7 @@ import { isSupabaseConfigured } from "@/lib/config";
 
 export async function updateSupabaseSession(request: NextRequest) {
   if (!isSupabaseConfigured()) {
-    return NextResponse.next();
+    return NextResponse.next({ request });
   }
 
   let response = NextResponse.next({
@@ -19,8 +19,7 @@ export async function updateSupabaseSession(request: NextRequest) {
         getAll() {
           return request.cookies.getAll();
         },
-
-        setAll(cookiesToSet) {
+        setAll(cookiesToSet, headers) {
           cookiesToSet.forEach(({ name, value }) => {
             request.cookies.set(name, value);
           });
@@ -32,12 +31,16 @@ export async function updateSupabaseSession(request: NextRequest) {
           cookiesToSet.forEach(({ name, value, options }) => {
             response.cookies.set(name, value, options);
           });
+
+          Object.entries(headers ?? {}).forEach(([key, value]) => {
+            response.headers.set(key, value);
+          });
         },
       },
     },
   );
 
-  await supabase.auth.getUser();
+  await supabase.auth.getClaims();
 
   return response;
 }
