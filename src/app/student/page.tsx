@@ -8,8 +8,25 @@ import { demoStore } from "@/lib/demo-store";
 import { formatDate, statusLabel } from "@/lib/format";
 
 export default async function StudentHome() {
-  const { user, error } = await requireUser(["student"]);
-  if (!user || error) redirect("/login");
+const { user, error } = await requireUser(["student"]);
+
+if (!user || error) {
+  return (
+    <div className="p-8">
+      <h1 className="text-2xl font-bold">Giriş kontrolü başarısız</h1>
+      <pre className="mt-4 whitespace-pre-wrap rounded-lg bg-gray-100 p-4">
+        {JSON.stringify(
+          {
+            user,
+            error,
+          },
+          null,
+          2,
+        )}
+      </pre>
+    </div>
+  );
+}
 
   const student = demoStore.studentForUser(user.id);
   const application = demoStore.applicationForUser(user.id);
