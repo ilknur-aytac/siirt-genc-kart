@@ -39,187 +39,21 @@ function profile(
   };
 }
 
-const IDS = {
-  admin: "11111111-1111-4111-8111-111111111111",
-  student: "22222222-2222-4222-8222-222222222222",
-  studentPending: "33333333-3333-4333-8333-333333333333",
-  business: "44444444-4444-4444-8444-444444444444",
-  cafe: "55555555-5555-4555-8555-555555555555",
-  restaurant: "66666666-6666-4666-8666-666666666666",
-  bookstore: "77777777-7777-4777-8777-777777777777",
-  studentRecord: "88888888-8888-4888-8888-888888888888",
-  appApproved: "99999999-9999-4999-8999-999999999999",
-  appPending: "aaaaaaaa-aaaa-4aaa-8aaa-aaaaaaaaaaaa",
-  buCafe: "bbbbbbbb-bbbb-4bbb-8bbb-bbbbbbbbbbbb",
-  discCafe: "cccccccc-cccc-4ccc-8ccc-cccccccccccc",
-  discRest: "dddddddd-dddd-4ddd-8ddd-dddddddddddd",
-  discBook: "eeeeeeee-eeee-4eee-8eee-eeeeeeeeeeee",
-  red1: "ffffffff-ffff-4fff-8fff-ffffffffffff",
-};
+const accounts: DemoAccount[] = [];
 
-const AVATAR_ELIF =
-  "data:image/svg+xml," +
-  encodeURIComponent(
-    `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 80 80"><rect fill="#0c2340" width="80" height="80"/><circle cx="40" cy="30" r="14" fill="#f6e7c8"/><ellipse cx="40" cy="66" rx="22" ry="18" fill="#c9a227"/></svg>`,
-  );
+const applications: StudentApplication[] = [];
 
-const accounts: DemoAccount[] = [
-  {
-    password: "demo123",
-    profile: profile(IDS.admin, "admin", "Ayşe", "Demir", "admin@siirtgenckart.demo"),
-  },
-  {
-    password: "demo123",
-    profile: profile(
-      IDS.student,
-      "student",
-      "Elif",
-      "Yılmaz",
-      "ogrenci@siirtgenckart.demo",
-      AVATAR_ELIF,
-    ),
-  },
-  {
-    password: "demo123",
-    profile: profile(
-      IDS.studentPending,
-      "student",
-      "Mert",
-      "Kaya",
-      "basvuru@siirtgenckart.demo",
-    ),
-  },
-  {
-    password: "demo123",
-    profile: profile(
-      IDS.business,
-      "business",
-      "Can",
-      "Öztürk",
-      "isletme@siirtgenckart.demo",
-    ),
-  },
-];
+const students: StudentRecord[] = [];
 
-const applications: StudentApplication[] = [
-  {
-    id: IDS.appApproved,
-    userId: IDS.student,
-    university: "Ankara Üniversitesi",
-    studentNumber: "21450123",
-    department: "Bilgisayar Mühendisliği",
-    documentName: "ogrenci-belgesi.pdf",
-    status: "approved",
-    notes: null,
-    createdAt: now(),
-    reviewedAt: now(),
-  },
-  {
-    id: IDS.appPending,
-    userId: IDS.studentPending,
-    university: "Hacettepe Üniversitesi",
-    studentNumber: "22098765",
-    department: "İşletme",
-    documentName: "ogrenci-belgesi.pdf",
-    status: "pending",
-    notes: null,
-    createdAt: now(),
-    reviewedAt: null,
-  },
-];
+const businesses: Business[] = [];
 
-const students: StudentRecord[] = [
-  {
-    id: IDS.studentRecord,
-    userId: IDS.student,
-    membershipNumber: "SGK-184392",
-    university: "Ankara Üniversitesi",
-    department: "Bilgisayar Mühendisliği",
-    status: "active",
-    validFrom: "2026-09-01",
-    validUntil: "2027-09-01",
-  },
-];
+const businessUsers: BusinessUser[] = [];
 
-const businesses: Business[] = [
-  {
-    id: IDS.cafe,
-    name: "Kampüs Kahve Ankara",
-    category: "kafe",
-    address: "Kızılay, Çankaya",
-    city: "Ankara",
-    isActive: true,
-  },
-  {
-    id: IDS.restaurant,
-    name: "Siirt Tadım Sofrası",
-    category: "restoran",
-    address: "Bahçelievler",
-    city: "Ankara",
-    isActive: true,
-  },
-  {
-    id: IDS.bookstore,
-    name: "Merkez Kitabevi",
-    category: "kitabevi",
-    address: "Tunalı Hilmi",
-    city: "Ankara",
-    isActive: true,
-  },
-];
-
-const businessUsers: BusinessUser[] = [
-  {
-    id: IDS.buCafe,
-    businessId: IDS.cafe,
-    userId: IDS.business,
-    role: "owner",
-  },
-];
-
-const discounts: Discount[] = [
-  {
-    id: IDS.discCafe,
-    businessId: IDS.cafe,
-    percentage: 20,
-    description: "Tüm içeceklerde öğrenci indirimi",
-    isActive: true,
-    validFrom: "2026-01-01",
-    validUntil: "2027-12-31",
-  },
-  {
-    id: IDS.discRest,
-    businessId: IDS.restaurant,
-    percentage: 15,
-    description: "Ana yemeklerde geçerli",
-    isActive: true,
-    validFrom: "2026-01-01",
-    validUntil: "2027-12-31",
-  },
-  {
-    id: IDS.discBook,
-    businessId: IDS.bookstore,
-    percentage: 10,
-    description: "Ders kitaplarında geçerli",
-    isActive: true,
-    validFrom: "2026-01-01",
-    validUntil: "2027-12-31",
-  },
-];
+const discounts: Discount[] = [];
 
 const qrTokens: QrToken[] = [];
 
-const redemptions: Redemption[] = [
-  {
-    id: IDS.red1,
-    studentId: IDS.studentRecord,
-    businessId: IDS.restaurant,
-    businessUserId: null,
-    discountId: IDS.discRest,
-    percentage: 15,
-    createdAt: new Date(Date.now() - 1000 * 60 * 60 * 26).toISOString(),
-  },
-];
+const redemptions: Redemption[] = [];
 
 type AuditLog = {
   id: string;
@@ -504,23 +338,4 @@ export const demoStore = {
   },
 };
 
-export const DEMO_LOGINS = [
-  {
-    role: "student" as const,
-    email: "ogrenci@siirtgenckart.demo",
-    password: "demo123",
-    label: "Öğrenci hesabı",
-  },
-  {
-    role: "business" as const,
-    email: "isletme@siirtgenckart.demo",
-    password: "demo123",
-    label: "İşletme hesabı",
-  },
-  {
-    role: "admin" as const,
-    email: "admin@siirtgenckart.demo",
-    password: "demo123",
-    label: "Yönetici hesabı",
-  },
-];
+export const DEMO_LOGINS = [];
