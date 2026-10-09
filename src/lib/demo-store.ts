@@ -338,4 +338,8 @@ export const demoStore = {
   },
 };
 
-export const DEMO_LOGINS = [];
+export const DEMO_LOGINS: {
+  email: string;
+  password: string;
+  label: string;
+}[] = [];
