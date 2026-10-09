@@ -16,11 +16,22 @@ export async function getSessionUser(): Promise<SessionUser | null> {
     } = await supabase.auth.getUser();
     if (!user) return null;
 
-    const { data: profile } = await supabase
-      .from("profiles")
-      .select("id, role, first_name, last_name, avatar_url")
-      .eq("id", user.id)
-      .maybeSingle();
+    
+const { data: profile, error: profileError } = await supabase
+  .from("profiles")
+  .select("id, role, first_name, last_name, avatar_url")
+  .eq("id", user.id)
+  .maybeSingle();
+
+if (profileError) {
+  console.error("PROFILE_QUERY_ERROR:", profileError.message);
+  throw new Error(`Profil sorgusu başarısız: ${profileError.message}`);
+}
+
+if (!profile) {
+  console.error("PROFILE_NOT_FOUND_FOR_USER:", user.id);
+  return null;
+}
 
     if (!profile) return null;
 
